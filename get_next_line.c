@@ -6,7 +6,7 @@
 /*   By: tbaghdas <tbaghdas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/02 16:45:33 by tbaghdas          #+#    #+#             */
-/*   Updated: 2025/03/08 18:20:37 by tbaghdas         ###   ########.fr       */
+/*   Updated: 2025/03/11 21:51:33 by tbaghdas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,16 +46,16 @@ int	ft_avail_line(char *line, char *old, int fd)
 
 	j = 0;
 	i = fd * BUFFER_SIZE;
-	limit = (fd + 1) * BUFFER_SIZE;
+	limit = i + BUFFER_SIZE;
 	while (old[i] != '\n' && i < limit && old[i] != '\0')
 		line[j++] = old[i++];
-	if (i < limit)
+	if ((old[i] == '\n' && i == limit) || old[i - 1] == '\n')
 	{
-		line[j] = '\n';
+		line[j] = '\0';
 		return_value = -1;
 	}
-	else if (old[i - 1] == '\n')
-		return_value = -1;
+	// else if (old[i - 1] == '\n')
+	// 	return_value = -1;
 	else
 		return_value = i - fd * BUFFER_SIZE;
 	ft_mem_shift(old, fd * BUFFER_SIZE, limit, i);
@@ -80,7 +80,8 @@ char	*get_next_line(int fd)
 	int			i;
 	int			shift;
 	int			count;
-int g, b = 5;
+
+int g;
 	count = BUFFER_SIZE;
 	i = 0;
 	if (read(fd, line, 0) == -1)
@@ -90,13 +91,16 @@ int g, b = 5;
 		return (NULL);
 	set_zero(old, 1000 * BUFFER_SIZE);
 	shift = ft_avail_line(line, old, fd);
+	//printf("\n shift %d\n", shift);
 	if (shift == -1)
 		return (line);
-	g =  read(fd, line + count - BUFFER_SIZE + shift, BUFFER_SIZE - shift);
+	g = read(fd, line + count - BUFFER_SIZE + shift, BUFFER_SIZE - shift);
+	printf("xcho %d %d %d\n", g, count, shift);
 	if (g == -1 || g < BUFFER_SIZE)
 		return (NULL);
-	while (g != -1  && g < BUFFER_SIZE && b !=0)
+	while (g != -1  && g >= BUFFER_SIZE)
 	{
+		//printf("UUUUUU  %d  \n", g);
 		//printf("testing : %s ##\n %d %d %d \n", line, count, shift, g);
 		i = count - BUFFER_SIZE + shift;
 		while (line[i] != '\n')
@@ -116,7 +120,6 @@ int g, b = 5;
 		line = tmp;
 		shift = 0;
 		g = read(fd, line + count - BUFFER_SIZE + shift, BUFFER_SIZE - shift);
-		b--;
 	}
 	ft_line_cpy(line, old, i, fd);
 	line[i] = '\0';
