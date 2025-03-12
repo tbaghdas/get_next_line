@@ -6,7 +6,7 @@
 /*   By: tbaghdas <tbaghdas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/02 16:45:33 by tbaghdas          #+#    #+#             */
-/*   Updated: 2025/03/11 21:51:33 by tbaghdas         ###   ########.fr       */
+/*   Updated: 2025/03/12 21:55:29 by tbaghdas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,11 +16,13 @@ void	ft_line_cpy(char *old, char *line, int i, int fd)
 {
 	int	j;
 	
-	j = 0;
-	while (old[i])
+	j = 0 + fd * BUFFER_SIZE;
+	while (old[i] != '\0')
 	{
-		line[j + fd] = old[i++];
+		// printf("TPMA %d\n", old[i]);
+		line[j++] = old[i++];
 	}
+	// printf("KLKLKLLKKKK %s plt\n", &line[fd*BUFFER_SIZE]);
 }
 
 void	ft_mem_shift(char *old, int start, int limit, int i)
@@ -47,10 +49,16 @@ int	ft_avail_line(char *line, char *old, int fd)
 	j = 0;
 	i = fd * BUFFER_SIZE;
 	limit = i + BUFFER_SIZE;
+	int t = 0;
+	// while (t < 33)
+	// 	printf("FFFF: %c %d\n", old[i + t], t++);
 	while (old[i] != '\n' && i < limit && old[i] != '\0')
 		line[j++] = old[i++];
-	if ((old[i] == '\n' && i == limit) || old[i - 1] == '\n')
+	// printf("nnnnnn %d\n", i);
+	//if ((old[i] == '\n' && i == limit) || old[i - 1] == '\n')
+	if (old[i - 1] == '\n')
 	{
+		line[j++] = '\n';
 		line[j] = '\0';
 		return_value = -1;
 	}
@@ -58,6 +66,7 @@ int	ft_avail_line(char *line, char *old, int fd)
 	// 	return_value = -1;
 	else
 		return_value = i - fd * BUFFER_SIZE;
+	// printf("QQQ %d %d \n", i, fd);
 	ft_mem_shift(old, fd * BUFFER_SIZE, limit, i);
 	return (return_value);
 }
@@ -82,6 +91,8 @@ char	*get_next_line(int fd)
 	int			count;
 
 int g;
+
+	// printf("TEBAOLDYDEMI: %s popon\n", &old[fd*BUFFER_SIZE]);
 	count = BUFFER_SIZE;
 	i = 0;
 	if (read(fd, line, 0) == -1)
@@ -89,13 +100,13 @@ int g;
 	line = (char *)malloc(count * sizeof(char));
 	if (line == NULL)
 		return (NULL);
-	set_zero(old, 1000 * BUFFER_SIZE);
+	// set_zero(old, 1000 * BUFFER_SIZE);
 	shift = ft_avail_line(line, old, fd);
 	//printf("\n shift %d\n", shift);
 	if (shift == -1)
 		return (line);
 	g = read(fd, line + count - BUFFER_SIZE + shift, BUFFER_SIZE - shift);
-	printf("xcho %d %d %d\n", g, count, shift);
+	// printf("xcho %d %d %d\n", g, count, shift);
 	if (g == -1 || g < BUFFER_SIZE)
 		return (NULL);
 	while (g != -1  && g >= BUFFER_SIZE)
@@ -103,11 +114,11 @@ int g;
 		//printf("UUUUUU  %d  \n", g);
 		//printf("testing : %s ##\n %d %d %d \n", line, count, shift, g);
 		i = count - BUFFER_SIZE + shift;
-		while (line[i] != '\n')
+		while (line[i] != '\n' && i < count)
 			i++;
 		if (i != count)
 			break ;
-		count *= BUFFER_SIZE;
+		count += BUFFER_SIZE;
 		tmp = (char *)malloc(count * sizeof(char));
 		if (tmp == NULL)
 		{
@@ -121,7 +132,10 @@ int g;
 		shift = 0;
 		g = read(fd, line + count - BUFFER_SIZE + shift, BUFFER_SIZE - shift);
 	}
-	ft_line_cpy(line, old, i, fd);
+	// printf("VVVVVVV %d  %s\n", i, &line[i]);
+	ft_line_cpy(line, old, ++i, fd);
+	// printf("TEBAOLDY: %s popo\n", &old[fd*BUFFER_SIZE]);
+	line[i++] = '\n';
 	line[i] = '\0';
 	return (line);
 }
