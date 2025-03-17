@@ -6,7 +6,7 @@
 /*   By: tbaghdas <tbaghdas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/02 16:45:33 by tbaghdas          #+#    #+#             */
-/*   Updated: 2025/03/12 21:55:29 by tbaghdas         ###   ########.fr       */
+/*   Updated: 2025/03/17 22:11:05 by tbaghdas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,11 +56,12 @@ int	ft_avail_line(char *line, char *old, int fd)
 		line[j++] = old[i++];
 	// printf("nnnnnn %d\n", i);
 	//if ((old[i] == '\n' && i == limit) || old[i - 1] == '\n')
-	if (old[i - 1] == '\n')
+	if (old[i] == '\n')
 	{
 		line[j++] = '\n';
 		line[j] = '\0';
 		return_value = -1;
+		i++;
 	}
 	// else if (old[i - 1] == '\n')
 	// 	return_value = -1;
@@ -107,14 +108,14 @@ int g;
 		return (line);
 	g = read(fd, line + count - BUFFER_SIZE + shift, BUFFER_SIZE - shift);
 	// printf("xcho %d %d %d\n", g, count, shift);
-	if (g == -1 || g < BUFFER_SIZE)
+	if (g == -1 || g == 0)// || g < BUFFER_SIZE)
 		return (NULL);
-	while (g != -1  && g >= BUFFER_SIZE)
+	while (g != -1)//  && g >= BUFFER_SIZE)
 	{
 		//printf("UUUUUU  %d  \n", g);
-		//printf("testing : %s ##\n %d %d %d \n", line, count, shift, g);
+		//printf("testing : %s ##\n %d %d %d \nc, line, count, shift, g);
 		i = count - BUFFER_SIZE + shift;
-		while (line[i] != '\n' && i < count)
+		while (line[i] != '\n' && i < count && i < g)
 			i++;
 		if (i != count)
 			break ;
@@ -134,7 +135,7 @@ int g;
 	}
 	// printf("VVVVVVV %d  %s\n", i, &line[i]);
 	ft_line_cpy(line, old, ++i, fd);
-	// printf("TEBAOLDY: %s popo\n", &old[fd*BUFFER_SIZE]);
+	 //printf("TEBAOLDY: %s popo\n", &old[fd*BUFFER_SIZE]);
 	line[i++] = '\n';
 	line[i] = '\0';
 	return (line);
@@ -155,7 +156,7 @@ int main(int argc, char **argv)
 {
     int fd;
     char *line;
-
+int b = 50;
     if (argc != 2)
     {
         write(1, "Usage: ./a.out <filename>\n", 25);
@@ -170,9 +171,9 @@ int main(int argc, char **argv)
     }
 
     // Read and print lines until EOF
-    while ((line = get_next_line(fd)) != NULL)
+    while ((line = get_next_line(fd)) != NULL && b-- > 0)
     {
-        printf("%s", line);
+        printf("line: %s", line);
         free(line);  // Free the memory allocated by get_next_line
     }
 
