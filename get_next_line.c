@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: btigran <btigran@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tbaghdas <tbaghdas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/02 16:45:33 by tbaghdas          #+#    #+#             */
-/*   Updated: 2025/03/24 17:34:41 by btigran          ###   ########.fr       */
+/*   Updated: 2025/03/29 16:57:56 by tbaghdas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ int	ft_avail_line(char *line, char *old, int fd)
 	j = 0;
 	i = fd * BUFFER_SIZE;
 	limit = i + BUFFER_SIZE;
-	int t = 0;
 	while (old[i] != '\n' && i < limit && old[i] != '\0')
 		line[j++] = old[i++];
 	if (old[i] == '\n')
@@ -83,27 +82,30 @@ char	*get_next_line(int fd)
 
 	int g;
 
+	if (fd < 0)
+		return (NULL);
 	count = BUFFER_SIZE;
 	i = 0;
-	if (read(fd, line, 0) == -1)
-		return (NULL);
 	line = (char *)malloc(count * sizeof(char));
 	if (line == NULL)
+		return (NULL);
+	if (read(fd, line, 0) == -1)
 		return (NULL);
 	shift = ft_avail_line(line, old, fd);
 	if (shift == -1)
 		return (line);
 	g = read(fd, line + count - BUFFER_SIZE + shift, BUFFER_SIZE - shift);
 	if (g == -1 || g == 0)// || g < BUFFER_SIZE)
-		return (NULL);
+		return (free(line), NULL);
 	while (g != -1)//  && g >= BUFFER_SIZE)
 	{
 		i = count - BUFFER_SIZE + shift;
-		while (line[i] != '\n' && i < count && i < g)
+		while (line[i] != '\n' && i < count)// -g)//&& i < g)
 			i++;
 		if (i != count)
 			break ;
 		count += BUFFER_SIZE;
+		//printf("%d\n", count);
 		tmp = (char *)malloc(count * sizeof(char));
 		if (tmp == NULL)
 		{
@@ -115,7 +117,9 @@ char	*get_next_line(int fd)
 		
 		line = tmp;
 		shift = 0;
+		//printf("%d %d %d %d kkk\n", count - BUFFER_SIZE + shift, BUFFER_SIZE - shift, shift, count);
 		g = read(fd, line + count - BUFFER_SIZE + shift, BUFFER_SIZE - shift);
+		//printf("g: %d \n", g);
 	}
 	if (line[i] == '\n')
 		ft_line_cpy(line, old, ++i, fd);
