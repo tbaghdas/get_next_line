@@ -6,7 +6,7 @@
 /*   By: tbaghdas <tbaghdas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/02 16:45:33 by tbaghdas          #+#    #+#             */
-/*   Updated: 2025/03/29 16:57:56 by tbaghdas         ###   ########.fr       */
+/*   Updated: 2025/03/30 16:15:06 by tbaghdas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	ft_line_cpy(char *old, char *line, int i, int fd)
 void	ft_mem_shift(char *old, int start, int limit, int i)
 {
 	int	idx_shift;
-	
+	//printf("OOOOOOOO gg OOOOOO %d %d\n", start, limit);
 	idx_shift = 0;
 	while (i + idx_shift < limit)
 	{
@@ -47,11 +47,12 @@ int	ft_avail_line(char *line, char *old, int fd)
 	j = 0;
 	i = fd * BUFFER_SIZE;
 	limit = i + BUFFER_SIZE;
+	//printf("VVVVVV %d %c\n", old[i], old[i]);
 	while (old[i] != '\n' && i < limit && old[i] != '\0')
 		line[j++] = old[i++];
 	if (old[i] == '\n')
 	{
-		line[j++] = '\n';
+		//line[j++] = '\n';
 		line[j] = '\0';
 		return_value = -1;
 		i++;
@@ -102,7 +103,7 @@ char	*get_next_line(int fd)
 		i = count - BUFFER_SIZE + shift;
 		while (line[i] != '\n' && i < count)// -g)//&& i < g)
 			i++;
-		if (i != count)
+		if (i != count || (g == 1 && line[i] == '\n'))
 			break ;
 		count += BUFFER_SIZE;
 		//printf("%d\n", count);
@@ -121,9 +122,9 @@ char	*get_next_line(int fd)
 		g = read(fd, line + count - BUFFER_SIZE + shift, BUFFER_SIZE - shift);
 		//printf("g: %d \n", g);
 	}
-	if (line[i] == '\n')
-		ft_line_cpy(line, old, ++i, fd);
-	line[i++] = '\n';
+	if (line[i] == '\n' && g != 1)
+		ft_line_cpy(line, old, i + 1, fd);
+	//line[i++] = '\n';
 	line[i] = '\0';
 	return (line);
 }
@@ -144,7 +145,7 @@ int main(int argc, char **argv)
     int fd;
     char *line;
 	int len = 0;
-int b = 50;
+
     if (argc != 2)
     {
         write(1, "Usage: ./a.out <filename>\n", 25);
@@ -159,12 +160,13 @@ int b = 50;
     }
 
     // Read and print lines until EOF
-    while ((line = get_next_line(fd)) != NULL && b-- > 0)
+    while ((line = get_next_line(fd)) != NULL)
     {
         //printf("line: %s", line);
 		
 		write(1, line, strlen(line));
         free(line);  // Free the memory allocated by get_next_line
+		write(1, "\n", 1);
     }
 
     close(fd);
