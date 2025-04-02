@@ -6,7 +6,7 @@
 /*   By: btigran <btigran@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/02 16:45:33 by tbaghdas          #+#    #+#             */
-/*   Updated: 2025/04/02 19:00:40 by btigran          ###   ########.fr       */
+/*   Updated: 2025/04/02 20:28:45 by btigran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 char	*get_next_line(int fd)
 {
 	char		*line;
-	//static char	old[RLIMIT_NOFILE * BUFFER_SIZE];
+	//old[RLIMIT_NOFILE * BUFFER_SIZE];
 	static char	*old[5000];
 	int			count;
 	int			i;
@@ -28,10 +28,11 @@ char	*get_next_line(int fd)
 		return (NULL);
 	if (i == -2)
 		return (line);
+	line[i + 1] = '\0';
 	line[i] = '\0';
 	return (line);
 }
-
+/*
 
 #include <fcntl.h>
 #include <stdio.h>
@@ -76,3 +77,4 @@ int main(int argc, char **argv)
     close(fd);
     return (0);
 }
+*/
