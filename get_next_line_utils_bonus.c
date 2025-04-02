@@ -1,19 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line_utils.c                              :+:      :+:    :+:   */
+/*   get_next_line_utils_bonus.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: btigran <btigran@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/02 16:45:33 by tbaghdas          #+#    #+#             */
-/*   Updated: 2025/04/02 19:01:30 by btigran          ###   ########.fr       */
+/*   Updated: 2025/04/02 19:01:16 by btigran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
 //header y 
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 void	ft_line_cpy(char *old, char *line, int i)
 {
