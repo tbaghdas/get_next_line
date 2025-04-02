@@ -6,7 +6,7 @@
 /*   By: btigran <btigran@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/02 16:45:33 by tbaghdas          #+#    #+#             */
-/*   Updated: 2025/04/02 20:44:16 by btigran          ###   ########.fr       */
+/*   Updated: 2025/04/02 21:08:16 by btigran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,7 @@ int	ft_while_body(int *arr, char **line, int *count, int fd)
 	ft_line_cpy(*line, tmp, 0);
 	free(*line);
 	*line = tmp;
+	ln = *line;
 	*shift = 0;
 	arr[0] = read(fd, *line + *count - BUFFER_SIZE, BUFFER_SIZE);
 	ln[*count - BUFFER_SIZE + arr[0]] = '\0';
@@ -130,7 +131,7 @@ int	ft_reading_file(char **ln, char *old, int *count, int fd)
 		if (ar[3] == -2)
 			break ;
 	}
-	if (line[ar[2]] == '\n' && ar[0] != 1)
+	if (*(*ln + ar[2]) == '\n' && ar[0] != 1)
 		ft_line_cpy(*ln, old, ar[2] + 1);
 	return (ar[2]);
 }
