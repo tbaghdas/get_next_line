@@ -6,7 +6,7 @@
 /*   By: btigran <btigran@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/02 16:45:33 by tbaghdas          #+#    #+#             */
-/*   Updated: 2025/04/02 20:27:16 by btigran          ###   ########.fr       */
+/*   Updated: 2025/04/02 20:44:16 by btigran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,23 +82,21 @@ char	*ft_check_and_init(int *count, char **old, int fd)
 int	ft_while_body(int *arr, char **line, int *count, int fd)
 {
 	char	*tmp;
-	int		*i;
 	int		*shift;
 	char	*ln;
 
 	ln = *line;
 	shift = &arr[1];
-	i = &arr[2];
-	*i = *count - BUFFER_SIZE + *shift;
-	while (*i < *count - 1 && ln[*i] != '\n')
-		(*i)++;
-	if (ln[*i] == '\n')
+	arr[2] = *count - BUFFER_SIZE + *shift;
+	while (arr[2] < *count - 1 && ln[arr[2]] != '\n')
+		(arr[2])++;
+	if (ln[arr[2]] == '\n')
 		return (-2);
 	*count += BUFFER_SIZE;
 	tmp = (char *)malloc((*count + 2) * sizeof(char));
 	if (tmp == NULL)
 		return (free(*line), -1);
-	ln[*i + 1] = '\0';
+	ln[arr[2] + 1] = '\0';
 	ft_line_cpy(*line, tmp, 0);
 	free(*line);
 	*line = tmp;
@@ -126,10 +124,10 @@ int	ft_reading_file(char **ln, char *old, int *count, int fd)
 		return (free(*ln), -1);
 	while (ar[0] > 0)
 	{
-		arr[3] = ft_while_body(ar, ln, count, fd);
-		if (arr[3] == -1)
-			return (arr[3]);
-		if (arr[3] == -2)
+		ar[3] = ft_while_body(ar, ln, count, fd);
+		if (ar[3] == -1)
+			return (ar[3]);
+		if (ar[3] == -2)
 			break ;
 	}
 	if (line[ar[2]] == '\n' && ar[0] != 1)
