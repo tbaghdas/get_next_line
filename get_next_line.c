@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: btigran <btigran@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tbaghdas <tbaghdas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/02 16:45:33 by tbaghdas          #+#    #+#             */
-/*   Updated: 2025/04/02 20:28:26 by btigran          ###   ########.fr       */
+/*   Updated: 2025/04/05 19:57:12 by tbaghdas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,21 +15,23 @@
 char	*get_next_line(int fd)
 {
 	char		*line;
-	//	old[RLIMIT_NOFILE * BUFFER_SIZE];
-	static char	*old[5000];
+	static char	*old[FOPEN_MAX];
 	int			count;
 	int			i;
+	int			arr[5];
 
+	arr[4] = fd;
 	line = ft_check_and_init(&count, &old[fd], fd);
 	if (line == NULL)
 		return (NULL);
-	i = ft_reading_file(&line, old[fd], &count, fd);
+	i = ft_reading_file(&line, old[fd], &count, arr);
 	if (i == -1)
 		return (NULL);
 	if (i == -2)
 		return (line);
-	line[i] = '\n';
-	line[i + 1] = '\0';
+	if (arr[0] != 0)
+		line[i++] = '\n';
+	line[i] = '\0';
 	return (line);
 }
 /*
@@ -41,7 +43,8 @@ char	*get_next_line(int fd)
 
 //#define BUFFER_SIZE 32
 
-// Prototype for your get_next_line function (adjust this according to your project)
+// Prototype for your get_next_line function 
+//(adjust this according to your project)
 char *get_next_line(int fd);
 
 int main(int argc, char **argv)
@@ -71,9 +74,10 @@ int main(int argc, char **argv)
 		write(1, line, strlen(line));
         if (line)
 			free(line);  // Free the memory allocated by get_next_line
-		write(1, "\n", 1);
+		//write(1, "\n", 1);
     }
 
     close(fd);
     return (0);
-}*/
+}
+*/

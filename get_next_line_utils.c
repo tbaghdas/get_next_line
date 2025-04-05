@@ -3,15 +3,12 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: btigran <btigran@student.42.fr>            +#+  +:+       +#+        */
+/*   By: tbaghdas <tbaghdas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/02 16:45:33 by tbaghdas          #+#    #+#             */
-/*   Updated: 2025/04/02 21:08:16 by btigran          ###   ########.fr       */
+/*   Updated: 2025/04/05 19:43:56 by tbaghdas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
-
-//header y 
 
 #include "get_next_line.h"
 
@@ -37,7 +34,8 @@ int	ft_avail_line(char *line, char *old, int i, int j)
 		line[j++] = old[i++];
 	if (old[i] == '\n')
 	{
-		line[j] = '\0';
+		line[j] = '\n';
+		line[j + 1] = '\0';
 		return_value = -1;
 		i++;
 	}
@@ -71,11 +69,11 @@ char	*ft_check_and_init(int *count, char **old, int fd)
 		while (i < *count + 1)
 			(*old)[i++] = '\0';
 	}
-	line = (char *)malloc((*count + 2) * sizeof(char));
+	line = (char *)malloc((*count*2 + 2) * sizeof(char));
 	if (line == NULL)
 		return (NULL);
-	if (read(fd, line, 0) == -1)
-		return (free(line), NULL);
+	// if (read(fd, line, 0) == -1)
+	// 	return (free(line), NULL);
 	return (line);
 }
 
@@ -93,7 +91,7 @@ int	ft_while_body(int *arr, char **line, int *count, int fd)
 	if (ln[arr[2]] == '\n')
 		return (-2);
 	*count += BUFFER_SIZE;
-	tmp = (char *)malloc((*count + 2) * sizeof(char));
+	tmp = (char *)malloc((*count*2 + 2) * sizeof(char));
 	if (tmp == NULL)
 		return (free(*line), -1);
 	ln[arr[2] + 1] = '\0';
@@ -107,9 +105,8 @@ int	ft_while_body(int *arr, char **line, int *count, int fd)
 	return (1);
 }
 
-int	ft_reading_file(char **ln, char *old, int *count, int fd)
+int	ft_reading_file(char **ln, char *old, int *count, int *ar)
 {
-	int		ar[4];
 	char	*line;
 
 	line = *ln;
@@ -117,7 +114,8 @@ int	ft_reading_file(char **ln, char *old, int *count, int fd)
 	if (ar[1] == -1)
 		return (-2);
 	ar[2] = 0;
-	ar[0] = read(fd, *ln + *count - BUFFER_SIZE + ar[1], BUFFER_SIZE - ar[1]);
+	ar[0] = read(ar[4], *ln + *count - BUFFER_SIZE + ar[1], BUFFER_SIZE - ar[1]);
+	//count = read(ar[4], line, BUFFER_SIZE);
 	line[*count - BUFFER_SIZE + ar[1] + ar[0]] = '\0';
 	if (ar[0] == 0)
 		ar[2] = ar[1];
@@ -125,7 +123,7 @@ int	ft_reading_file(char **ln, char *old, int *count, int fd)
 		return (free(*ln), -1);
 	while (ar[0] > 0)
 	{
-		ar[3] = ft_while_body(ar, ln, count, fd);
+		ar[3] = ft_while_body(ar, ln, count, ar[4]);
 		if (ar[3] == -1)
 			return (ar[3]);
 		if (ar[3] == -2)
