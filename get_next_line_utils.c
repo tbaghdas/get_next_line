@@ -6,7 +6,7 @@
 /*   By: tbaghdas <tbaghdas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/02 16:45:33 by tbaghdas          #+#    #+#             */
-/*   Updated: 2025/04/05 19:43:56 by tbaghdas         ###   ########.fr       */
+/*   Updated: 2025/04/07 22:27:12 by tbaghdas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ char	*ft_check_and_init(int *count, char **old, int fd)
 	char	*line;
 	int		i;
 
-	if (fd < 0 || fd > 5000)
+	if (fd < 0 || fd > FOPEN_MAX)
 		return (NULL);
 	*count = BUFFER_SIZE;
 	if (*old == NULL)
@@ -69,11 +69,9 @@ char	*ft_check_and_init(int *count, char **old, int fd)
 		while (i < *count + 1)
 			(*old)[i++] = '\0';
 	}
-	line = (char *)malloc((*count*2 + 2) * sizeof(char));
+	line = (char *)malloc((*count * 2 + 2) * sizeof(char));
 	if (line == NULL)
-		return (NULL);
-	// if (read(fd, line, 0) == -1)
-	// 	return (free(line), NULL);
+		return (free(*old), *old = NULL, NULL);
 	return (line);
 }
 
@@ -85,15 +83,15 @@ int	ft_while_body(int *arr, char **line, int *count, int fd)
 
 	ln = *line;
 	shift = &arr[1];
-	arr[2] = *count - BUFFER_SIZE + *shift;
+	arr[2] = *count - BUFFER_SIZE;
 	while (arr[2] < *count - 1 && ln[arr[2]] != '\n')
 		(arr[2])++;
 	if (ln[arr[2]] == '\n')
 		return (-2);
 	*count += BUFFER_SIZE;
-	tmp = (char *)malloc((*count*2 + 2) * sizeof(char));
+	tmp = (char *)malloc((*count + 2) * sizeof(char));
 	if (tmp == NULL)
-		return (free(*line), -1);
+		return (free(*line), *line = NULL, -1);
 	ln[arr[2] + 1] = '\0';
 	ft_line_cpy(*line, tmp, 0);
 	free(*line);
@@ -114,18 +112,18 @@ int	ft_reading_file(char **ln, char *old, int *count, int *ar)
 	if (ar[1] == -1)
 		return (-2);
 	ar[2] = 0;
-	ar[0] = read(ar[4], *ln + *count - BUFFER_SIZE + ar[1], BUFFER_SIZE - ar[1]);
-	//count = read(ar[4], line, BUFFER_SIZE);
-	line[*count - BUFFER_SIZE + ar[1] + ar[0]] = '\0';
+	*count += ar[1];
+	ar[0] = read(ar[4], *ln + *count - BUFFER_SIZE, BUFFER_SIZE);
+	line[*count - BUFFER_SIZE + ar[0]] = '\0';
 	if (ar[0] == 0)
 		ar[2] = ar[1];
 	if (ar[0] == -1 || (ar[0] == 0 && ar[1] == 0))
-		return (free(*ln), -1);
+		return (free(*ln), *ln = NULL, free(old), old = NULL, -1);
 	while (ar[0] > 0)
 	{
 		ar[3] = ft_while_body(ar, ln, count, ar[4]);
 		if (ar[3] == -1)
-			return (ar[3]);
+			return (free(old), old = NULL, ar[3]);
 		if (ar[3] == -2)
 			break ;
 	}

@@ -6,7 +6,7 @@
 /*   By: tbaghdas <tbaghdas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/02 16:45:33 by tbaghdas          #+#    #+#             */
-/*   Updated: 2025/04/05 19:57:12 by tbaghdas         ###   ########.fr       */
+/*   Updated: 2025/04/07 22:24:06 by tbaghdas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,23 +15,21 @@
 char	*get_next_line(int fd)
 {
 	char		*line;
-	static char	*old[FOPEN_MAX];
+	static char	*old;
 	int			count;
 	int			i;
 	int			arr[5];
 
 	arr[4] = fd;
-	line = ft_check_and_init(&count, &old[fd], fd);
+	line = ft_check_and_init(&count, &old, fd);
 	if (line == NULL)
 		return (NULL);
-	i = ft_reading_file(&line, old[fd], &count, arr);
+	i = ft_reading_file(&line, old, &count, arr);
 	if (i == -1)
 		return (NULL);
 	if (i == -2)
 		return (line);
-	if (arr[0] != 0)
-		line[i++] = '\n';
-	line[i] = '\0';
+	line[++i] = '\0';
 	return (line);
 }
 /*
@@ -52,7 +50,7 @@ int main(int argc, char **argv)
     int fd;
     char *line;
 	int len = 0;
-
+int b = 0;
     if (argc != 2)
     {
         write(1, "Usage: ./a.out <filename>\n", 25);
@@ -67,11 +65,11 @@ int main(int argc, char **argv)
     }
 
     // Read and print lines until EOF
-    while ((line = get_next_line(fd)) != NULL)
+    while ((line = get_next_line(fd)) != NULL && b++ < 19)
     {
         //printf("line: %s", line);
-		
-		write(1, line, strlen(line));
+		printf("%d: %s", b, line);
+		//write(1, line, strlen(line));
         if (line)
 			free(line);  // Free the memory allocated by get_next_line
 		//write(1, "\n", 1);

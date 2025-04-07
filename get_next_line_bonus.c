@@ -6,7 +6,7 @@
 /*   By: tbaghdas <tbaghdas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/02 16:45:33 by tbaghdas          #+#    #+#             */
-/*   Updated: 2025/04/05 18:49:50 by tbaghdas         ###   ########.fr       */
+/*   Updated: 2025/04/07 20:35:12 by tbaghdas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,7 @@ char	*get_next_line(int fd)
 		return (NULL);
 	if (i == -2)
 		return (line);
-	if (arr[0] != 0)
-		line[i++] = '\n';
-	line[i] = '\0';
+	line[++i] = '\0';
 	return (line);
 }
 /*
