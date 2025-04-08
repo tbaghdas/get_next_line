@@ -6,7 +6,7 @@
 /*   By: btigran <btigran@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/02 16:45:33 by tbaghdas          #+#    #+#             */
-/*   Updated: 2025/04/08 20:29:41 by btigran          ###   ########.fr       */
+/*   Updated: 2025/04/08 23:34:07 by btigran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ int b = 0;
     }
 
     // Read and print lines until EOF
-    while (line != NULL || line2 != NULL || b < 19)
+    while (line != NULL || b < 19)
     {
         //printf("line: %s", line);
 		//printf("%d: %s\n", b, line);
@@ -78,19 +78,19 @@ int b = 0;
 			write(1, line, strlen(line));
 			free(line);  // Free the memory allocated by get_next_line
 		}
-		if (line2 != NULL)
-		{
-			write(1, line2, strlen(line2));
-			free(line2);
-		}
-		if (b == 2)
-		{
-			close(fd);
-			fd = open(argv[1], O_RDONLY);
-		}
+		// if (line2 != NULL)
+		// {
+		// 	write(1, line2, strlen(line2));
+		// 	free(line2);
+		// }
+		// if (b == 2)
+		// {
+		// 	close(fd);
+		// 	fd = open(argv[1], O_RDONLY);
+		// }
 		//write(1, "\n", 1);
 		line = get_next_line(fd);
-		line2 = get_next_line(fd2);
+		// line2 = get_next_line(fd2);
 		++b;
     }
 

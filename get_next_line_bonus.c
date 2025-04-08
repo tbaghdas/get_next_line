@@ -6,7 +6,7 @@
 /*   By: btigran <btigran@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/02 16:45:33 by tbaghdas          #+#    #+#             */
-/*   Updated: 2025/04/08 20:29:26 by btigran          ###   ########.fr       */
+/*   Updated: 2025/04/08 23:34:30 by btigran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,10 +87,14 @@ int main(int argc, char **argv)
 
 int main(int argc, char **argv)
 {
-    int fd;
+    int fd1;
     int fd2;
     char *line = NULL;
     char *line2 = NULL;
+    int fd3;
+    int fd4;
+    char *line3 = NULL;
+    char *line4 = NULL;
 	int len = 0;
 int b = 0;
     if (argc < 2)
@@ -99,42 +103,134 @@ int b = 0;
         return (1);
     }
 
-    fd = open(argv[1], O_RDONLY);
-    fd2 = open(argv[2], O_RDONLY);
-    if (fd == -1)
-    {
-        perror("Error opening file");
-        return (1);
-    }
+    fd1 = open(argv[1], O_RDONLY);
+    fd2 = open(argv[1], O_RDONLY);
+    fd3 = open(argv[1], O_RDONLY);
 
-    // Read and print lines until EOF
-    while (line != NULL || line2 != NULL || b < 19)
-    {
-        //printf("line: %s", line);
-		//printf("%d: %s\n", b, line);
-		//printf("%d: %s\n", b, line2);
-        if (line)
-		{
-			write(1, line, strlen(line));
-			free(line);  // Free the memory allocated by get_next_line
-		}
-		if (line2 != NULL)
+
+    
+    line2 = get_next_line(fd1);		
+    if (line2 != NULL)
 		{
 			write(1, line2, strlen(line2));
 			free(line2);
 		}
-		if (b == 2)
+    line2 = get_next_line(fd2);	
+    if (line2 != NULL)
 		{
-			close(fd);
-			fd = open(argv[1], O_RDONLY);
+			write(1, line2, strlen(line2));
+			free(line2);
 		}
-		//write(1, "\n", 1);
-		line = get_next_line(fd);
-		line2 = get_next_line(fd2);
-		++b;
-    }
+    line2 = get_next_line(fd3);	
+    if (line2 != NULL)
+		{
+			write(1, line2, strlen(line2));
+			free(line2);
+		}
+    line2 = get_next_line(fd1);	
+    if (line2 != NULL)
+		{
+			write(1, line2, strlen(line2));
+			free(line2);
+		}
+    line2 = get_next_line(fd2);	
+    if (line2 != NULL)
+		{
+			write(1, line2, strlen(line2));
+			free(line2);
+		}
+    line2 = get_next_line(fd2);	
+    if (line2 != NULL)
+		{
+			write(1, line2, strlen(line2));
+			free(line2);
+		}
+    fd4 = open(argv[2], O_RDONLY);
 
-    close(fd);
+
+
+    line2 = get_next_line(fd2);		
+    if (line2 != NULL)
+		{
+			write(1, line2, strlen(line2));
+			free(line2);
+		}
+    line2 = get_next_line(fd3);	
+    if (line2 != NULL)
+		{
+			write(1, line2, strlen(line2));
+			free(line2);
+		}
+    line2 = get_next_line(fd4);	
+    if (line2 != NULL)
+		{
+			write(1, line2, strlen(line2));
+            write(1, "\nGGGG\n", 6);
+			free(line2);
+		}
+    line2 = get_next_line(fd2);	
+    if (line2 != NULL)
+		{
+			write(1, line2, strlen(line2));
+            write(1, "\nGFFG\n", 6);
+			free(line2);
+		}
+    line2 = get_next_line(fd2);	
+    if (line2 != NULL)
+		{
+			write(1, line2, strlen(line2));
+            write(1, "\nGDDG\n", 6);
+			free(line2);
+		}
+    line2 = get_next_line(fd1);	
+    if (line2 != NULL)
+		{
+			write(1, line2, strlen(line2));
+            write(1, "\nGKKG\n", 6);
+			free(line2);
+		}
+    line2 = get_next_line(fd4);	
+    if (line2 != NULL)
+		{
+			write(1, line2, strlen(line2));
+            write(1, "\nGLLG\n", 6);
+			free(line2);
+		}
+    
+    // if (fd == -1)
+    // {
+    //     perror("Error opening file");
+    //     return (1);
+    // }
+
+    // Read and print lines until EOF
+    // while (line != NULL || line2 != NULL || b < 19)
+    // {
+    //     //printf("line: %s", line);
+	// 	//printf("%d: %s\n", b, line);
+	// 	//printf("%d: %s\n", b, line2);
+    //     if (line)
+	// 	{
+	// 		write(1, line, strlen(line));
+	// 		free(line);  // Free the memory allocated by get_next_line
+	// 	}
+	// 	if (line2 != NULL)
+	// 	{
+	// 		write(1, line2, strlen(line2));
+	// 		free(line2);
+	// 	}
+	// 	if (b == 2)
+	// 	{
+	// 		close(fd);
+	// 		fd = open(argv[1], O_RDONLY);
+	// 	}
+	// 	//write(1, "\n", 1);
+	// 	line = get_next_line(fd);
+	// 	line2 = get_next_line(fd2);
+	// 	++b;
+    // }
+
+   // close(fd);
     return (0);
 }
 */
