@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tbaghdas <tbaghdas@student.42.fr>          +#+  +:+       +#+        */
+/*   By: btigran <btigran@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/02 16:45:33 by tbaghdas          #+#    #+#             */
-/*   Updated: 2025/04/07 22:27:12 by tbaghdas         ###   ########.fr       */
+/*   Updated: 2025/04/08 19:49:36 by btigran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,12 +103,12 @@ int	ft_while_body(int *arr, char **line, int *count, int fd)
 	return (1);
 }
 
-int	ft_reading_file(char **ln, char *old, int *count, int *ar)
+int	ft_reading_file(char **ln, char **old, int *count, int *ar)
 {
 	char	*line;
 
 	line = *ln;
-	ar[1] = ft_avail_line(*ln, old, 0, 0);
+	ar[1] = ft_avail_line(*ln, *old, 0, 0);
 	if (ar[1] == -1)
 		return (-2);
 	ar[2] = 0;
@@ -118,16 +118,16 @@ int	ft_reading_file(char **ln, char *old, int *count, int *ar)
 	if (ar[0] == 0)
 		ar[2] = ar[1];
 	if (ar[0] == -1 || (ar[0] == 0 && ar[1] == 0))
-		return (free(*ln), *ln = NULL, free(old), old = NULL, -1);
+		return (free(*ln), *ln = NULL, free(*old), *old = NULL, -1);
 	while (ar[0] > 0)
 	{
 		ar[3] = ft_while_body(ar, ln, count, ar[4]);
 		if (ar[3] == -1)
-			return (free(old), old = NULL, ar[3]);
+			return (free(*old), *old = NULL, ar[3]);
 		if (ar[3] == -2)
 			break ;
 	}
 	if (*(*ln + ar[2]) == '\n' && ar[0] != 1)
-		ft_line_cpy(*ln, old, ar[2] + 1);
+		ft_line_cpy(*ln, *old, ar[2] + 1);
 	return (ar[2]);
 }
