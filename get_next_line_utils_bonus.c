@@ -6,7 +6,7 @@
 /*   By: btigran <btigran@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/02 16:45:33 by tbaghdas          #+#    #+#             */
-/*   Updated: 2025/04/08 23:20:07 by btigran          ###   ########.fr       */
+/*   Updated: 2025/04/09 16:31:07 by btigran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,9 +84,9 @@ int	ft_while_body(int *arr, char **line, int *count, int fd)
 	ln = *line;
 	shift = &arr[1];
 	arr[2] = *count - BUFFER_SIZE;
-	while (arr[2] < *count - 1 && ln[arr[2]] != '\n')
+	while (arr[2] < *count - 1 && ln[arr[2]] != '\n' && ln[arr[2]] != '\0')
 		(arr[2])++;
-	if (ln[arr[2]] == '\n')
+	if (ln[arr[2]] == '\n' || arr[0] < BUFFER_SIZE)
 		return (-2);
 	*count += BUFFER_SIZE;
 	tmp = (char *)malloc((*count + 2) * sizeof(char));
@@ -120,7 +120,7 @@ int	ft_reading_file(char **ln, char **old, int *count, int *ar)
 		ar[2] = ar[1];
 	if (ar[0] == -1 || (ar[0] == 0 && ar[1] == 0))
 		return (free(*ln), *ln = NULL, free(*old), *old = NULL, -1);
-	while (ar[0] == BUFFER_SIZE)
+	while (ar[0] > 0)
 	{
 		ar[3] = ft_while_body(ar, ln, count, ar[4]);
 		if (ar[3] == -1)

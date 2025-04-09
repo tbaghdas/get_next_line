@@ -6,7 +6,7 @@
 /*   By: btigran <btigran@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/02 16:45:33 by tbaghdas          #+#    #+#             */
-/*   Updated: 2025/04/08 23:32:52 by btigran          ###   ########.fr       */
+/*   Updated: 2025/04/09 16:23:42 by btigran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,15 +84,15 @@ int	ft_while_body(int *arr, char **line, int *count, int fd)
 	ln = *line;
 	shift = &arr[1];
 	arr[2] = *count - BUFFER_SIZE;
-	while (arr[2] < *count - 1 && ln[arr[2]] != '\n')// || ln[arr[2]] != '\0'))
+	while (arr[2] < *count - 1 && ln[arr[2]] != '\n' && ln[arr[2]] != '\0')
 		(arr[2])++;
-	if (ln[arr[2]] == '\n')
+	if (ln[arr[2]] == '\n' || arr[0] < BUFFER_SIZE)
 		return (-2);
 	*count += BUFFER_SIZE;
+	ln[arr[2] + 1] = '\0';
 	tmp = (char *)malloc((*count + 2) * sizeof(char));
 	if (tmp == NULL)
 		return (free(*line), *line = NULL, -1);
-	ln[arr[2] + 1] = '\0';
 	ft_line_cpy(*line, tmp, 0);
 	free(*line);
 	*line = tmp;
@@ -120,7 +120,7 @@ int	ft_reading_file(char **ln, char **old, int *count, int *ar)
 		ar[2] = ar[1];
 	if (ar[0] == -1 || (ar[0] == 0 && ar[1] == 0))
 		return (free(*ln), *ln = NULL, free(*old), *old = NULL, -1);
-	while (ar[0] == BUFFER_SIZE)//(ar[0] > 0)
+	while (ar[0] > 0)
 	{
 		ar[3] = ft_while_body(ar, ln, count, ar[4]);
 		if (ar[3] == -1)
@@ -129,6 +129,6 @@ int	ft_reading_file(char **ln, char **old, int *count, int *ar)
 			break ;
 	}
 	if (*(*ln + ar[2]) == '\n' && ar[0] != 1)
-		ft_line_cpy(*ln, *old, ar[2] + 1);
+		ft_line_cpy(*ln, *old, ar[2] + 1);//ar[1]?
 	return (ar[2]);
 }

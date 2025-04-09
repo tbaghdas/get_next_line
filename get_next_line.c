@@ -6,7 +6,7 @@
 /*   By: btigran <btigran@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/02 16:45:33 by tbaghdas          #+#    #+#             */
-/*   Updated: 2025/04/08 23:34:07 by btigran          ###   ########.fr       */
+/*   Updated: 2025/04/09 16:32:28 by btigran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ int b = 0;
     }
 
     fd = open(argv[1], O_RDONLY);
-    fd2 = open(argv[2], O_RDONLY);
+    //fd2 = open(argv[2], O_RDONLY);
     if (fd == -1)
     {
         perror("Error opening file");
@@ -97,4 +97,4 @@ int b = 0;
     close(fd);
     return (0);
 }
-*/
+//*/
