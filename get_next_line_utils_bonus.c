@@ -6,7 +6,7 @@
 /*   By: btigran <btigran@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/03/02 16:45:33 by tbaghdas          #+#    #+#             */
-/*   Updated: 2025/04/09 16:31:07 by btigran          ###   ########.fr       */
+/*   Updated: 2025/04/09 16:53:21 by btigran          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,6 @@ int	ft_reading_file(char **ln, char **old, int *count, int *ar)
 	ar[1] = ft_avail_line(*ln, *old, 0, 0);
 	if (ar[1] == -1)
 		return (-2);
-	//ar[2] = 0;
 	*count += ar[1];
 	ar[0] = read(ar[4], *ln + *count - BUFFER_SIZE, BUFFER_SIZE);
 	line[*count - BUFFER_SIZE + ar[0]] = '\0';
